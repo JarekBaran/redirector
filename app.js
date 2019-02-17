@@ -1,9 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const search = require('./lib/fuzzball_ultra_lite.js');
+const auth = require('http-auth');
 const fs = require('fs');
 const app = express();
 
+const htpasswd = auth.basic({
+  realm: "Redirector Auth",
+  file: __dirname + "/../../.htpasswd"
+});
+
+app.use(auth.connect(htpasswd));
 app.use(bodyParser.json({limit: '3mb', extended: true}));
 app.use(bodyParser.urlencoded({limit: '3mb', extended: true}));
 
