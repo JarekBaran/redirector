@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const compression = require('compression');
 const search = require('./lib/fuzzball_ultra_lite.js');
 const auth = require('http-auth');
 const fs = require('fs');
@@ -11,6 +12,7 @@ const htpasswd = auth.basic({
 });
 
 app.use(auth.connect(htpasswd));
+app.use(compression({ level: 9, treshold: 0 }));
 app.use(bodyParser.json({limit: '3mb', extended: true}));
 app.use(bodyParser.urlencoded({limit: '3mb', extended: true}));
 
